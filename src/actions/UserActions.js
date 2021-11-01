@@ -38,8 +38,11 @@ export const login = (user) => async (dispatch) => {
       type: LOGIN,
       payload: data
     });
+
+    return data.id;
   } catch (error) {
     console.log(error);
+    return false;
   }
 };
 

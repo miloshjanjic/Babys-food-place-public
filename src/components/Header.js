@@ -2,24 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {LOGOUT} from '../constants/UserConstants';
+import { LOGOUT } from '../constants/UserConstants';
 // import decode from 'jwt-decode';
 
 export function Header() {
 
   // const loggedUser = useSelector(state => state.UsersReducer.users)
   // const userId = loggedUser._id;
-  // or
-  // const { userId } = useParams();
-  // const user = null;
-  
+
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
-  console.log(`Navigation user: ${user}`);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  //console.log(`Navigation user: ${user}`);
 
   const logout = () => {
     dispatch({ type: LOGOUT });
@@ -37,7 +33,7 @@ export function Header() {
       // if (decodedToken.exp * 1000 < new Date().getTime());
       setUser(JSON.parse(localStorage.getItem('profile')));
     }
-  }, [location]);
+  }, [location,user]);
 
 
   return (

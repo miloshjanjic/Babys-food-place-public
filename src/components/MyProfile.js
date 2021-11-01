@@ -2,44 +2,43 @@ import React, { useState } from 'react';
 import '../assets/index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser, showOneUser } from '../actions/UserActions';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import FileBase from 'react-file-base64';
-//import { set } from 'mongoose';
-//import Cookies from 'universal-cookie';
 
 export function MyProfile() {
-  // const cookies = new Cookies();
-  // const token = cookies.get("token");
-  //const [token, setToken] = useState(JSON.parse(localStorage.getItem('profile',token)));
   //const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-
-  const loggedUser = useSelector(state => state.UsersReducer.users); //! not work
   //const loggedUser = useState(JSON.parse(localStorage.getItem('profile')));
 
+  const loggedUser = useSelector(state => state.UsersReducer.users); //! WORK
+
   const token = useSelector(state => state.UsersReducer.token); //! WORK
-  const [user, setUser] = useState(loggedUser); //! not work  !!!
+  const [user, setUser] = useState(loggedUser); //! NOT work  !!!
 
   console.log(`MyProfile user: ${loggedUser}`);
   console.log(`MyProfile Token: ${token}`);
-
-  const [redirect, setRedirect] = useState(false);
+  console.log(`MyProfile user: ${user}`);
+  //const [redirect, setRedirect] = useState(false);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const userId = user._id;
+    //const userId = loggedUser._id
 
-    //dispatch(showOneUser(userId,user));
-    dispatch(updateUser(userId, user)); //user or setUser
-    setRedirect(true);
+    dispatch(updateUser(userId, user)); //! NOT work
+    history.push(`/${loggedUser._id}/myProfile`);
+    //setRedirect(true);
   }
+  //const userId = loggedUser._id;
 
-  if (redirect) {
-    return <Redirect to={`/${loggedUser._id}/myProfile`} />
-  }
+  // if (redirect) {
+  //   return <Redirect to={`/${loggedUser._id}/myProfile`} />
+  // } //    return <Redirect to={`/${loggedUser._id}/myProfile`} />
 
+  console.log(`This is userId: ${loggedUser._id}`);
 
   return (
     <div id="myProfile">
@@ -50,7 +49,8 @@ export function MyProfile() {
           <div><FileBase
             type="file"
             multiple={false}
-            onDone={({ base64 }) => setUser({ ...user, avatar: base64 })} /></div>
+            onDone={({ base64 }) => setUser({ ...user, avatar: base64 })}
+          /></div>
         </div>
         <div>
           <form className='form'>
@@ -64,14 +64,14 @@ export function MyProfile() {
             <p>Email</p>
             <input
               type='email'
-              placeholder='email@yahoo.com'
+              placeholder='.....@yahoo.com'
               value={user.email}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
             ></input>
             <p>Password</p>
             <input
               type='password'
-              placeholder='**********'
+              placeholder='******'
               value={user.password}
               onChange={(e) => setUser({ ...user, password: e.target.value })}
             ></input>
@@ -92,6 +92,7 @@ export function MyProfile() {
             <input
               type='string'
               value={user.birthday}
+              placeholder='YYYY-MM-DD'
               // .format('YYYY-MM-DD') 
               // yourDate.toISOString().split('T')[0]
               onChange={(e) => setUser({ ...user, birthday: e.target.value })}
@@ -99,7 +100,7 @@ export function MyProfile() {
             <p>Repeat Password</p>
             <input
               type='password'
-              placeholder='**********'
+              placeholder='*****'
               value={user.repeatPassword}
               onChange={(e) => setUser({ ...user, repeatPassword: e.target.value })}
             ></input>

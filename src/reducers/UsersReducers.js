@@ -31,7 +31,6 @@ export default (state = initialState, action) => {
       console.log(`ShowUser reducer: ${action.payload}`);
       return { users: action.payload }
 
-
     case UPDATE_USER:
       return { users: [...state, action.payload] }
 
