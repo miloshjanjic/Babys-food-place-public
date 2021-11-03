@@ -38,7 +38,7 @@ export const login = (user) => async (dispatch) => {
       type: LOGIN,
       payload: data
     });
-
+    console.log(data.id)
     return data.id;
   } catch (error) {
     console.log(error);
@@ -59,9 +59,9 @@ export const deleteUser = () => async (dispatch) => {
   }
 };
 
-export const updateUser = () => async (dispatch) => {
+export const updateUser = (id, user) => async (dispatch) => {
   try {
-    const { data } = await api.updateUser();
+    const { data } = await api.updateUser(id, user);
 
     dispatch({
       type: UPDATE_USER,

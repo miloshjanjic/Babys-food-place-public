@@ -1,41 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-// import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux'; //to acces useState from anywhere
 import Store from './Store'; //keeps the States
 import { AuthProvider } from './context/AuthContext';
-import { BrowserRouter, Router } from "react-router-dom";
-
 
 export const history = createBrowserHistory();
 
 ReactDOM.render(
 
   <React.Fragment>
-    <BrowserRouter>
+    {/* <Router> */}
 
       <Provider store={Store}>
-
         <Router history={history}>
 
           {/* <AuthProvider> */}
-
             <App />
-
           {/* </AuthProvider> */}
 
         </Router>
       </Provider>
 
-    </BrowserRouter>
-  </React.Fragment>
-
-  ,
+    {/* </Router> */}
+  </React.Fragment>,
   document.getElementById('root')
 );
-
 
 
 /////////////////////// DIME index

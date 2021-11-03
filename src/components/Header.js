@@ -21,19 +21,18 @@ export function Header() {
     dispatch({ type: LOGOUT });
 
     history.push('/login');
-
     setUser(null);
   };
 
-  useEffect(() => {
-    const token = user?.token;
+  async function setUserForHeader() {
+    setUser(JSON.parse(localStorage.getItem('profile')))
+  };
 
-    if (token) {
-      // const decodedToken = decode(token);
-      // if (decodedToken.exp * 1000 < new Date().getTime());
-      setUser(JSON.parse(localStorage.getItem('profile')));
-    }
-  }, [location,user]);
+
+  useEffect(async () => {
+    console.log("user changed")
+    await setUserForHeader();
+  }, []);
 
 
   return (
@@ -65,8 +64,8 @@ export function Header() {
             <Link to='/recipes' className='headerLink'>MY RECIPES</Link>
           </button>
           <span className='headerOr'>or</span>
-          <button className='registerBtn'>
-            <Link to='/:userId/myProfile' className='headerLink'>MY PROFILE</Link>
+           <button className='registerBtn'>
+            <Link to={"/" + user.user._id + "/myProfile"} className='headerLink'>MY PROFILE</Link>
           </button>
           <button className='registerBtn' onClick={logout}>LOGOUT
             {/* <Link to='/login' className='headerLink'></Link> */}
