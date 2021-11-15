@@ -9,13 +9,19 @@ export function Header() {
 
   // const loggedUser = useSelector(state => state.UsersReducer.users)
   // const userId = loggedUser._id;
+  // const { userId } = useParams();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-  //console.log(`Navigation user: ${user}`);
+  // useEffect(() => {
+  //   const token = user?.token;
+  //   if (token) {
+  //     setUser(JSON.parse(localStorage.getItem('profile').token))
+  //   }
+  // }, [location]);
 
   const logout = () => {
     dispatch({ type: LOGOUT });
@@ -27,7 +33,6 @@ export function Header() {
   async function setUserForHeader() {
     setUser(JSON.parse(localStorage.getItem('profile')))
   };
-
 
   useEffect(async () => {
     console.log("user changed")
@@ -64,11 +69,12 @@ export function Header() {
             <Link to='/recipes' className='headerLink'>MY RECIPES</Link>
           </button>
           <span className='headerOr'>or</span>
-           <button className='registerBtn'>
+          <button className='registerBtn'>
             <Link to={"/" + user.user._id + "/myProfile"} className='headerLink'>MY PROFILE</Link>
+            {/* <Link to={`/${userId}/myProfile`} className='headerLink'>MY PROFILE</Link> */}
           </button>
           <button className='registerBtn' onClick={logout}>LOGOUT
-            {/* <Link to='/login' className='headerLink'></Link> */}
+              <Link to='/login' className='headerLink'></Link>
           </button>
         </div> :
         <div>
@@ -104,6 +110,6 @@ export function Header() {
         <button className='registerBtn'><Link to='/register' className='headerLink'>REGISTER</Link></button> :
         <button className='loginBtn'><Link to='/recipes' className='headerLink'>MY RECIPES</Link></button>} */}
 
-    </header>
+    </header >
   )
 };

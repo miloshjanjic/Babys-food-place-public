@@ -30,7 +30,7 @@ ReactDOM.render(
 );
 
 
-/////////////////////// DIME index
+/////////////////////// index
 
 // import React from "react";
 // import ReactDOM from "react-dom";

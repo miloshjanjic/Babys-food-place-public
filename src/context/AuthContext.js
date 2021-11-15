@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useState } from "react"
 // import { useDispatch } from 'react-redux';
 // import * as api from '../api/usersApi';
 // import { LOGIN } from '../constants/UserConstants';
@@ -12,7 +12,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   // const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
-  
+
   // const dispatch = useDispatch();
 
   // async function login(user) {

@@ -4,7 +4,6 @@ import { FETCH_USERS, REGISTER, LOGIN, UPDATE_USER, SHOW_USER, DELETE_USER, LOGO
 const initialState = {
   users: [],
   token: null
-  // token: localStorage.getItem('token')
 };
 
 export default (state = initialState, action) => {
@@ -14,7 +13,6 @@ export default (state = initialState, action) => {
       localStorage.setItem('profile', JSON.stringify({
         ...action?.payload
       }));
-      // localStorage.setItem('token', action.payload.token)
       return {
         users: action?.payload.user,
         token: action?.payload.token

@@ -6,3 +6,4 @@ export const UPDATE_USER = 'UPDATE_USER';
 export const SHOW_USER = 'SHOW_USER';
 export const DELETE_USER = 'DELETE_USER';
 export const LOGOUT = 'LOGOUT'
+// export const URL = 'http://localhost:4000/users'; //da se izmeni

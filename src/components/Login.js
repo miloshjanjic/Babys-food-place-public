@@ -11,11 +11,13 @@ export function Login() {
   //const [loginRessult, setLoginRessult] = useState();
   const [loading, setLoading] = useState(false);
 
-  const userLogged = useSelector(state => state.UsersReducer.users);
+  //const userLogged = useSelector(state => state.UsersReducer.users);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const handleSubmit = async (e) => {
+    console.log(user);
+    // e.preventDefault();
     dispatch(login(user)).then(
       response => {
         console.log(response);
@@ -31,12 +33,10 @@ export function Login() {
       });
   };
 
-  // console.dir(Login user: ${userLogged} and user: ${user});
-
   async function redirectIfLogedIn(value) {
-    if (value != null) {
-      //history.push(`/${value}/myProfile`);
-       < Redirect to={`/${value}/myProfile`} />
+    if (value != null && value != false) {
+      history.push(`/${value}/myProfile`);
+      //< Redirect to={`/${value}/myProfile`} />
     }
   }
 

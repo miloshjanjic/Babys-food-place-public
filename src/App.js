@@ -49,7 +49,7 @@ const App = () => {
 export default App;
 
 
-////////////////////////////// DimeApp.js 
+////////////////////////////// App.js 
 
 
 // import {  Route, Switch } from "react-router-dom";
