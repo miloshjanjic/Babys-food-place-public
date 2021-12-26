@@ -38,8 +38,8 @@ export const login = (user) => async (dispatch) => {
       type: LOGIN,
       payload: data
     });
-    console.log(data.id)
-    return data.id;
+    console.log(data.user._id);
+    return data.user._id;
   } catch (error) {
     console.log(error);
     return false;
@@ -59,16 +59,18 @@ export const deleteUser = () => async (dispatch) => {
   }
 };
 
-export const updateUser = (id, user) => async (dispatch) => {
+export const updateUser = (userId, user) => async (dispatch) => { // added updatedUser on user place
   try {
-    const { data } = await api.updateUser(id, user);
+    const { data } = await api.updateUser(userId, user);
 
     dispatch({
       type: UPDATE_USER,
       payload: data.updatedUser
     });
+    console.log(data);
+    return data.updatedUser //! added .user to throw back updated
   } catch (error) {
-    console.log(error);
+    console.log(error); /// vraka state.users.map 
   }
 };
 

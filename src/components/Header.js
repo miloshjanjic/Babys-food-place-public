@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { LOGOUT } from '../constants/UserConstants';
-// import decode from 'jwt-decode';
 
 export function Header() {
 
-  // const loggedUser = useSelector(state => state.UsersReducer.users)
-  // const userId = loggedUser._id;
-  // const { userId } = useParams();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  const { userId } = useParams();
 
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const token = user?.token;
-  //   if (token) {
-  //     setUser(JSON.parse(localStorage.getItem('profile').token))
-  //   }
-  // }, [location]);
+  useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      setUser(JSON.parse(localStorage.getItem('profile')))
+    }
+  }, [location]);
 
   const logout = () => {
     dispatch({ type: LOGOUT });
@@ -30,15 +27,14 @@ export function Header() {
     setUser(null);
   };
 
-  async function setUserForHeader() {
-    setUser(JSON.parse(localStorage.getItem('profile')))
-  };
+  // async function setUserForHeader() {
+  //   setUser(JSON.parse(localStorage.getItem('profile')))
+  // };
 
-  useEffect(async () => {
-    console.log("user changed")
-    await setUserForHeader();
-  }, []);
-
+  // useEffect(async () => {
+  //   console.log("user changed")
+  //   await setUserForHeader();
+  // }, []);
 
   return (
     <header className='header'>
@@ -86,29 +82,6 @@ export function Header() {
           </button>
         </div>
       }
-
-      {/* <button className='loginBtn'>
-        <Link to='/recipes' className='headerLink'>MY RECIPES</Link>
-      </button>
-      <span className='headerOr'>or</span>
-      <button className='registerBtn'>
-        <Link to='/:userId/myProfile' className='headerLink'>MY PROFILE</Link>
-      </button>
-      <button className='registerBtn'>
-        <Link to='/register' className='headerLink'>REGISTER</Link>
-      </button>
-      <button className='loginBtn'>
-        <Link to='/login' className='headerLink'>LOG IN</Link>
-      </button> */}
-
-
-      {/* {(!userId) ?
-        <button className='loginBtn'><Link to='/login' className='headerLink'>LOG IN</Link></button> :
-        <button className='loginBtn'><Link to='/:userId/myProfile' className='headerLink'>MY PROFILE</Link></button>}
-      <span className='headerOr'>or</span>
-      {(!userId) ?
-        <button className='registerBtn'><Link to='/register' className='headerLink'>REGISTER</Link></button> :
-        <button className='loginBtn'><Link to='/recipes' className='headerLink'>MY RECIPES</Link></button>} */}
 
     </header >
   )

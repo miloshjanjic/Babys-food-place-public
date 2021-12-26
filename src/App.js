@@ -11,7 +11,7 @@ import { Lunch } from './components/Lunch';
 import { Dinner } from './components/Dinner';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
-import { MyProfile } from './components/MyProfile';
+import { MyProfile } from './components/MyProfile';  //! old
 import { MyRecipes } from './components/MyRecipes';
 import { RecipeCreateEdit } from "./components/RecipeCreateEdit";
 import { RecipeView } from './components/RecipeView';
@@ -20,6 +20,8 @@ import { AuthProvider } from './context/AuthContext';
 // private route = da baram komponenta vo podloga da ja ima rutata dokolku postoi token
 // da prodolzi vo myprofile a dokolku ne da me vrati na login
 
+// da se postavi nova komponenta,dokolku imas token go zapisuvas ,da vraka true ili false 
+// ako ima token ke gi vrati site komponenti
 const App = () => {
 
   return (
@@ -33,7 +35,7 @@ const App = () => {
           <Route path='/lunch' component={Lunch} />
           <Route path='/dinner' component={Dinner} />
           <Route path='/login' component={Login} />
-          <Route path='/register' component={Register} />
+          <Route path='/register' component={Register} /> 
           <Route exact path='/view' component={RecipeView} />
           <Route exact path='/recipes' component={MyRecipes} />
           <Route exact path='/recipes/new' component={RecipeCreateEdit} />
@@ -48,9 +50,7 @@ const App = () => {
 
 export default App;
 
-
 ////////////////////////////// App.js 
-
 
 // import {  Route, Switch } from "react-router-dom";
 // import { Container } from "semantic-ui-react";

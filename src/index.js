@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux'; //to acces useState from anywhere
 import Store from './Store'; //keeps the States
-import { AuthProvider } from './context/AuthContext';
 
 export const history = createBrowserHistory();
 
@@ -17,9 +16,7 @@ ReactDOM.render(
       <Provider store={Store}>
         <Router history={history}>
 
-          {/* <AuthProvider> */}
             <App />
-          {/* </AuthProvider> */}
 
         </Router>
       </Provider>

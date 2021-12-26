@@ -38,7 +38,7 @@ export function MyRecipes(props) {
         <tbody>
           {recipes.map(recipe => {
             return (
-              <tr key={recipe._id}>
+              <tr key={recipe._id}> 
                 <Link to={`/recipes/${recipe._id}`}>
                   <td >{recipe.title}</td>
                 </Link>

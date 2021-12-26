@@ -1,30 +1,31 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { login } from '../actions/UserActions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import '../assets/index.css';
 
 export function Login() {
+  //const userLogged = useSelector(state => state.UsersReducer.users);
+  //const [loginRessult, setLoginRessult] = useState();
   const [user, setUser] = useState({ email: '', password: '' });
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
-  //const [loginRessult, setLoginRessult] = useState();
   const [loading, setLoading] = useState(false);
 
-  //const userLogged = useSelector(state => state.UsersReducer.users);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const handleSubmit = async (e) => {
     console.log(user);
-    // e.preventDefault();
+    e.preventDefault();
     dispatch(login(user)).then(
       response => {
-        console.log(response);
+        console.log(`This is response: ${response}`);
         redirectIfLogedIn(response);
         setSuccess('Logged in successfully');
         setError('');
         setLoading(true);
+        // history.push(`/${user.id}/myProfile`);
       }).catch(error => {
         console.log(error);
         setSuccess('');
@@ -34,7 +35,8 @@ export function Login() {
   };
 
   async function redirectIfLogedIn(value) {
-    if (value != null && value != false) {
+    // console.log(value);
+    if (value != null && value != false && value != undefined) {
       history.push(`/${value}/myProfile`);
       //< Redirect to={`/${value}/myProfile`} />
     }

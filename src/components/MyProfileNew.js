@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../actions/UserActions';
 import { useHistory, useParams } from 'react-router-dom';
 import FileBase from 'react-file-base64';
+import Cookies from 'universal-cookie';
+import axios from "axios";
 import '../assets/index.css';
 
 export function MyProfile() {
-  //const loggedUser = useSelector(state => state.UsersReducer.users); //! oldest
-  //const [user,setUser] = useState(loggedUser); //! oldest
-  //const token = JSON.parse(localStorage.getItem('profile')).token;
+
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')).user); //! work  !!!
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem('profile')).token);
+  // const [userId, setUserID] = useState(JSON.parse(localStorage.getItem('profile')).user._id);
+  const { userId } = useParams();
+  console.log(userId);
+  const history = useHistory();
+
+  const fetchUrl = `http://localhost:4000/users/${userId}/myProfile`;
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -19,29 +26,86 @@ export function MyProfile() {
   const [birthday, setBirthday] = useState('');
   const [avatar, setAvatar] = useState('');
 
-  //const { userId } = useParams();
-  const userId = user._id;
-  // console.log(userId);
+  axios.interceptors.request.use(
+    config => {
+      config.headers.authorization = `Bearer ${token}`;
+      return config; 
+    },
+    error => {
+      return Promise.reject(error);
+    }
+  );
 
-  const dispatch = useDispatch();
-  const history = useHistory();
+  useEffect(() => {
+    fetch(fetchUrl, {
+      headers: {
+        Authorization: "Bearer" + token,  
+        Accept: "application/json",  
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setFirstName(data.user.firstName);
+        setLastName(data.user.lastName);
+        setEmail(data.user.email);
+        setBirthday(data.user.birthday);
+        setAvatar(data.user.avatar);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUser(userId, user)).then(
-      response => {
-        console.log(`This is MyProfile response: ${response}`);
-        if (response != undefined) {
-          //setUser(response);
-          // localStorage.setItem('profile',JSON.stringify({
-          //   response
-          // }))
-        }
-      }
-    ).catch(error => {
-      console.log(error);
-    });
-    history.push(`/${userId}/myProfile`);
+    axios
+      .patch(fetchUrl, {
+        headers: {
+          Authorization: "Bearer" + token,  
+          "Content-Type": "application/json",
+        },
+      })
+      .then(({ data }) => {
+        console.log({ data });
+        fetch(fetchUrl, {
+          credentials: "same-origin",
+          method: "patch",
+          headers: {
+            Authorization: "Bearer" + token, 
+            "Access-Control-Allow-Origin": "*",
+            Accept: "application/json", 
+            "Content-Type": "application/json",
+          },
+          //make sure to serialize your JSON body
+          body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            birthday: birthday,
+            password: password,
+            repeatPassword: repeatPassword,
+            avatar: avatar,
+          }),
+        })
+          .then((res) => {
+            console.log(res);
+            return res.json();
+          })
+          .then((data) => {
+            if (data.error) {
+              alert(data.message);
+            } else {
+              alert("User Updated");
+              console.log(data);
+              history.push(`/${userId}/myProfile`);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+
   };
 
   return (
@@ -54,7 +118,6 @@ export function MyProfile() {
             type="file"
             multiple={false}
             onDone={({ base64 }) => setUser({ ...user, avatar: base64 })}
-          //onDone={({ base64 }) => setAvatar(base64)}
           /></div>
         </div>
         <div>
@@ -62,10 +125,9 @@ export function MyProfile() {
             <p>First Name</p>
             <input
               type='text'
-              placeholder="firstName"
-              defaultValue={user.firstName} // defaultValue={user.firstName}
+              placeholder={firstName}
+              defaultValue={user.firstName}
               onChange={(e) => setUser({ ...user, firstName: e.target.value })}
-            //onChange={(e) => setFirstName(e.target.value)}
             ></input>
             <p>Email</p>
             <input
@@ -73,8 +135,6 @@ export function MyProfile() {
               placeholder='.....@yahoo.com'
               defaultValue={user.email}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
-            //onChange={(e) => setUser({ setEmail: e.target.value })}
-            //onChange={(e) => setEmail(e.target.value)}
             ></input>
             <p>Password</p>
             <input
@@ -82,7 +142,6 @@ export function MyProfile() {
               placeholder='******'
               defaultValue={user.password} //{12345}
               onChange={(e) => setUser({ ...user, password: e.target.value })}
-            //onChange={(e) => setPassword(e.target.value)}
             ></input>
             <br /><br />
             <button className='greenBtn' onClick={handleSubmit}>UPDATE ACCOUNT</button>
@@ -96,17 +155,13 @@ export function MyProfile() {
               placeholder='Doo'
               defaultValue={user.lastName}
               onChange={(e) => setUser({ ...user, lastName: e.target.value })}
-            //onChange={(e) => setLastName(e.target.value)}
             ></input>
             <p>Birthday</p>
             <input
               type='string'
-              placeholder='YYYY-MM-DD'
               defaultValue={user.birthday}
-              // .format('YYYY-MM-DD') 
-              // yourDate.toISOString().split('T')[0]
+              placeholder='YYYY-MM-DD'
               onChange={(e) => setUser({ ...user, birthday: e.target.value })}
-            //onChange={(e) => setBirthday(e.target.value)}
             ></input>
             <p>Repeat Password</p>
             <input
@@ -114,7 +169,6 @@ export function MyProfile() {
               placeholder='*****'
               defaultValue={user.repeatPassword} //{12345}
               onChange={(e) => setUser({ ...user, repeatPassword: e.target.value })}
-            //onChange={(e) => setRepeatPassword(e.target.value)}
             ></input>
           </form>
         </div>
